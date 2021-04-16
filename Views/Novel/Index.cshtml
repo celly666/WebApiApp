@@ -1,0 +1,74 @@
+﻿@model IEnumerable<WebApiAPP.Models.Novel>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<style>
+    .alertify-notifier .ajs-message.ajs-success {
+        background-color: blueviolet;
+    }
+</style>
+
+<h2>Index</h2>
+
+<p>
+    <a href="@Url.Action("Create", "Novel")" class="btn btn-danger"><i class="fa fa-plus">Create New</i></a>
+</p>
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.bookName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.bookName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                <a href="@Url.Action("Edit", "Novel", new { id = item.id })" class="btn btn-success"><i class="fa fa-pencil"></i>Edit</a>
+                <a onclick="Delete(@item.id)" class="btn btn-danger"><i class="fa fa-trash"> Delete</i></a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section scripts{
+
+    <script>
+        $(function () {
+            var SuccessMessage = '@TempData["SuccessMessage"]'
+            if (SuccessMessage != '')
+                alertify.success(SuccessMessage);
+        });
+        function Delete(id) {
+            alertify.confirm('Web Api system', 'Are You sure You want to delete this record?', function () {
+                window.location.href = '@Url.Action("Delete", "Novel")/' + id;
+            },null);
+        }
+
+
+
+    </script>
+
+}
+
